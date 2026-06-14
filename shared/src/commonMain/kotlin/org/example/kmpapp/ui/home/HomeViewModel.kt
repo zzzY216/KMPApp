@@ -1,9 +1,11 @@
-package org.example.kmpapp.home
+package org.example.kmpapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.kmpapp.core.ble.BleResult
@@ -12,6 +14,8 @@ import org.example.kmpapp.core.ble.getBleManager
 class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState = _uiState.asStateFlow()
+    private val _effect = Channel<HomeEffect>(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
     private val bleManager = getBleManager()
 
     init {
@@ -70,9 +74,11 @@ class HomeViewModel : ViewModel() {
             if (_uiState.value.isScanning) {
                 toggleScan()
             }
+            _effect.send(HomeEffect.ShowToast("开始尝试连接"))
             val result = bleManager.connect(deviceId)
             when (result) {
                 is BleResult.Error -> {
+                    _effect.send(HomeEffect.ShowToast(result.message))
                     _uiState.update {
                         it.copy(
                             errorMessage = result.message
@@ -80,7 +86,9 @@ class HomeViewModel : ViewModel() {
                     }
                 }
 
-                is BleResult.Success<*> -> {}
+                is BleResult.Success<*> -> {
+                    _effect.send(HomeEffect.ShowToast("连接成功"))
+                }
             }
         }
     }

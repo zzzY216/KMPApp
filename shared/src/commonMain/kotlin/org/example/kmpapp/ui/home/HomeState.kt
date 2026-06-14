@@ -1,4 +1,4 @@
-package org.example.kmpapp.home
+package org.example.kmpapp.ui.home
 
 import org.example.kmpapp.core.ble.BleConnectionState
 import org.example.kmpapp.core.ble.BleDevice

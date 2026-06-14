@@ -3,6 +3,7 @@ package org.example.kmpapp.core.ble
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.example.kmpapp.toNSData
 import platform.CoreBluetooth.CBCentralManager
 import platform.CoreBluetooth.CBCentralManagerDelegateProtocol
 import platform.CoreBluetooth.CBCentralManagerStatePoweredOn
@@ -77,7 +78,7 @@ class IOSBleManager : NSObject(), IBle, CBCentralManagerDelegateProtocol,
             continuation.resume(it)
         }
         activePeripheral?.writeValue(
-            data,
+            data.toNSData(),
             characteristic,
             CBCharacteristicWriteWithResponse
         )
