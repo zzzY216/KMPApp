@@ -13,3 +13,5 @@ data class ProductDetailRoute(
     val name: String,
     val price: String
 )
+@Serializable
+object ProfileScreenRoute

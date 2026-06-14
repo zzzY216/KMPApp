@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -22,6 +23,7 @@ import androidx.navigation.toRoute
 import org.example.kmpapp.ui.home.HomeScreen
 import org.example.kmpapp.ui.home.HomeViewModel
 import org.example.kmpapp.ui.product.ProductDetailScreen
+import org.example.kmpapp.ui.profile.ProfileScreen
 import org.example.kmpapp.ui.shop.ShopScreen
 import org.example.kmpapp.ui.shop.ShopViewModel
 
@@ -32,7 +34,8 @@ fun App() {
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry.value?.destination
     val showBottomBar = currentDestination?.hasRoute<HomeScreenRoute>() == true ||
-            currentDestination?.hasRoute<ShopScreenRoute>() == true
+            currentDestination?.hasRoute<ShopScreenRoute>() == true ||
+            currentDestination?.hasRoute<ProfileScreenRoute>() == true
     val bottomBar = listOf(
         TopLevelRoute(
             name = "Home",
@@ -40,9 +43,14 @@ fun App() {
             icon = Icons.Default.Home
         ),
         TopLevelRoute(
-            name = "shop",
+            name = "Shop",
             route = ShopScreenRoute,
             icon = Icons.Default.ShoppingCart
+        ),
+        TopLevelRoute(
+            name = "Profile",
+            route = ProfileScreenRoute,
+            icon = Icons.Default.Person
         )
     )
     Column(
@@ -80,6 +88,9 @@ fun App() {
                         navController.popBackStack()
                     }
                 )
+            }
+            composable<ProfileScreenRoute> {
+                ProfileScreen()
             }
         }
         if (showBottomBar) {
