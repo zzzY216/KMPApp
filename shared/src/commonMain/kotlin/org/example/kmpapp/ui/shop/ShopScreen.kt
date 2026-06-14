@@ -1,6 +1,7 @@
 package org.example.kmpapp.ui.shop
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,7 +35,8 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ShopScreen(
-    viewModel: ShopViewModel
+    viewModel: ShopViewModel,
+    onProductClick: (Product) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
@@ -42,7 +44,8 @@ fun ShopScreen(
     ) { innerPadding ->
         ShopContent(
             modifier = Modifier.padding(innerPadding),
-            products = uiState.value.product
+            products = uiState.value.product,
+            onProductClick = onProductClick
         )
     }
 }
@@ -50,7 +53,8 @@ fun ShopScreen(
 @Composable
 fun ShopContent(
     modifier: Modifier = Modifier,
-    products: List<Product>
+    products: List<Product>,
+    onProductClick: (Product) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -62,21 +66,29 @@ fun ShopContent(
         item(span = { GridItemSpan(2) }) {
             LargeCardItem(
                 title = "今日推荐超值大奖",
-                price = "9999￥"
+                price = "9999￥",
             )
         }
         items(products) { product ->
-            LittleCardItem(product)
+            LittleCardItem(
+                product = product,
+                onClick = {
+                    onProductClick(product)
+                }
+            )
         }
     }
 }
 
 @Composable
 fun LittleCardItem(
-    product: Product
+    product: Product,
+    onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable {
+            onClick()
+        },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {

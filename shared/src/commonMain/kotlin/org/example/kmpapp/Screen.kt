@@ -7,3 +7,9 @@ object HomeScreenRoute
 
 @Serializable
 object ShopScreenRoute
+
+@Serializable
+data class ProductDetailRoute(
+    val name: String,
+    val price: String
+)
