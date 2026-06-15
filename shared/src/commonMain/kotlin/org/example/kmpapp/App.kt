@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -26,6 +27,7 @@ import org.example.kmpapp.ui.product.ProductDetailScreen
 import org.example.kmpapp.ui.profile.ProfileScreen
 import org.example.kmpapp.ui.shop.ShopScreen
 import org.example.kmpapp.ui.shop.ShopViewModel
+import org.example.kmpapp.ui.video.VideoScreen
 
 @Composable
 @Preview
@@ -35,12 +37,18 @@ fun App() {
     val currentDestination = backStackEntry.value?.destination
     val showBottomBar = currentDestination?.hasRoute<HomeScreenRoute>() == true ||
             currentDestination?.hasRoute<ShopScreenRoute>() == true ||
-            currentDestination?.hasRoute<ProfileScreenRoute>() == true
+            currentDestination?.hasRoute<ProfileScreenRoute>() == true ||
+            currentDestination?.hasRoute<VideoScreenRoute>() == true
     val bottomBar = listOf(
         TopLevelRoute(
             name = "Home",
             route = HomeScreenRoute,
             icon = Icons.Default.Home
+        ),
+        TopLevelRoute(
+            name = "video",
+            route = VideoScreenRoute,
+            icon = Icons.Default.Videocam
         ),
         TopLevelRoute(
             name = "Shop",
@@ -65,6 +73,9 @@ fun App() {
                 HomeScreen(
                     viewModel = HomeViewModel()
                 )
+            }
+            composable<VideoScreenRoute> {
+                VideoScreen()
             }
             composable<ShopScreenRoute> {
                 ShopScreen(
