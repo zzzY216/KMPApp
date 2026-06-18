@@ -47,7 +47,7 @@ fun ProductDetailScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            onBackClick
+                            onBackClick()
                         }
                     ) {
                         Icon(

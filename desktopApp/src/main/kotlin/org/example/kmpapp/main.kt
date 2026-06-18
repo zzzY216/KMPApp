@@ -8,6 +8,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "KMPApp",
     ) {
-        App()
+        App(isDesktop = true)
     }
 }
